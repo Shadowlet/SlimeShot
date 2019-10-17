@@ -34,16 +34,21 @@ public class SpawnSlingShot : MonoBehaviour
     void MoveSlingshot()
     {
         slingshotPrefab.SetActive(true);
-        slingshotPrefab.transform.position = new Vector2(this.transform.position.x, this.transform.position.y);
+        slingshotPrefab.transform.position = new Vector2(this.transform.position.x, this.transform.position.y - 100);
     }
 
-    void findTouch()
+    private void OnMouseDrag()
     {
-
+        slingshotPrefab.SetActive(true);
+        clickPoint = mainT.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
+        //transform.position = clickPoint;
+        Debug.Log(clickPoint);
+        //gameObject.SetActive(false);
     }
 
     private void OnMouseDown()
     {
+        
         clickPoint = mainT.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
         Debug.Log("Testing");
 
