@@ -19,7 +19,7 @@ public class FollowsBall : MonoBehaviour
     {
         ballPos = ballPrefab.transform.position;
 
-        transform.position = ballPos + offset;
+        transform.position = new Vector3(ballPos.x + offset.x, transform.position.y, -10);
         offset.z = -10;
 
         //Debug.Log("Camera Location" + transform.position);

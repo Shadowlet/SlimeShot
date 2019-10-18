@@ -6,12 +6,14 @@ public class SpawnSlingShot : MonoBehaviour
 {
     public GameObject slingshotPrefab;
     public GameManager gameManager;
+
     public BlockManager blockManager;
+    public GameScore gameScore;
 
     private Camera mainT;
 
     //private Touch touch = Input.GetTouch(0);
-    private TouchPhase Touchdidbegin = TouchPhase.Began;
+    //private TouchPhase Touchdidbegin = TouchPhase.Began;
     private Vector2 clickPoint;
     private Vector2 clickRelease;
 
@@ -23,7 +25,6 @@ public class SpawnSlingShot : MonoBehaviour
     float powerX;
     float powerY;
 
-    // Start is called before the first frame update
     void Start()
     {
         slingshotPrefab.SetActive(false);
@@ -32,12 +33,15 @@ public class SpawnSlingShot : MonoBehaviour
         rb2D.freezeRotation = true;
         mainT = Camera.main;
         //Debug.Log(mainT);
+        
+
     }
 
     // Update is called once per frame
     void Update()
     {
         checkPlayerPos();
+
         
     }
 
@@ -90,17 +94,20 @@ public class SpawnSlingShot : MonoBehaviour
     }
     private void checkPlayerPos()
     {
-        //Check top
-        if (this.transform.position.x >= blockManager.topSpawnOffset)
+        //Check for score
+        if (this.transform.position.x >= blockManager.blockStartPos + gameScore.currentScore * 10)
         {
-            blockManager.SpawnMoreBlocks(true);
+            gameScore.IncrementScore();
         }
 
-        if (transform.position.x >= blockManager.bottomSpawnOffset)
+        //Check for ground
+        if (this.transform.position.x >= blockManager.groundStartPosX + (blockManager.topGroundOffset * 10))
         {
-            blockManager.SpawnMoreBlocks(false);
+            blockManager.SpawnMoreGround();
         }
-        //Check bottom
+        //Check for bottom
+
+        //Check for top
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
