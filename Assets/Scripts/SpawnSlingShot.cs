@@ -20,7 +20,8 @@ public class SpawnSlingShot : MonoBehaviour
 
     private Rigidbody2D rb2D;
 
-    float power;
+    float powerX;
+    float powerY;
 
     // Start is called before the first frame update
     void Start()
@@ -76,15 +77,17 @@ public class SpawnSlingShot : MonoBehaviour
 
     private void LaunchSlime()
     {
-        rb2D.velocity = new Vector2(0,0);
+        rb2D.velocity = new Vector2(0, 0);
         rb2D.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
-        power = clickPoint.x - clickRelease.x;
+        powerX = clickPoint.x - clickRelease.x;
+        powerY = clickPoint.y - clickRelease.y;
         //Debug.Log(power);
 
-        rb2D.AddForce(transform.up * power * 100);
-        rb2D.AddForce(transform.right * power * 100);
-    }
+        //rb2D.AddForce(transform.up * power * 100);
+        //rb2D.AddForce(transform.right * power * 100);
 
+        rb2D.velocity = new Vector2(powerX * 2, powerY * 2);
+    }
     private void checkPlayerPos()
     {
         //Check top
