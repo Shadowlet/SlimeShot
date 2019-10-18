@@ -5,12 +5,18 @@ using UnityEngine;
 public class SpawnSlingShot : MonoBehaviour
 {
     public GameObject slingshotPrefab;
+    public GameManager gameManager;
+    public BlockManager blockManager;
+
     private Camera mainT;
 
     //private Touch touch = Input.GetTouch(0);
     private TouchPhase Touchdidbegin = TouchPhase.Began;
     private Vector2 clickPoint;
     private Vector2 clickRelease;
+
+    private int posX;
+    private int posY;
 
     private Rigidbody2D rb2D;
 
@@ -19,40 +25,45 @@ public class SpawnSlingShot : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rb2D = gameObject.AddComponent<Rigidbody2D>();
+        slingshotPrefab.SetActive(false);
+
+        rb2D = gameObject.GetComponent<Rigidbody2D>();
         rb2D.freezeRotation = true;
         mainT = Camera.main;
+        //Debug.Log(mainT);
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        checkPlayerPos();
         
     }
 
     void MoveSlingshot()
     {
         slingshotPrefab.SetActive(true);
-        slingshotPrefab.transform.position = new Vector2(this.transform.position.x, this.transform.position.y - 100);
+        slingshotPrefab.transform.position = new Vector2(this.transform.position.x, this.transform.position.y + 1);
     }
 
     private void OnMouseDrag()
     {
-        slingshotPrefab.SetActive(true);
-        clickPoint = mainT.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
+        
+        //clickPoint = mainT.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
         //transform.position = clickPoint;
-        Debug.Log(clickPoint);
-        //gameObject.SetActive(false);
+
+        Debug.Log(Input.mousePosition.x + Input.mousePosition.y);
     }
 
     private void OnMouseDown()
     {
-        
-        clickPoint = mainT.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
-        Debug.Log("Testing");
+        rb2D.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
 
         MoveSlingshot();
+        clickPoint = mainT.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
+        //Debug.Log(clickPoint);
+
+        
     }
 
     private void OnMouseUp()
@@ -65,12 +76,46 @@ public class SpawnSlingShot : MonoBehaviour
 
     private void LaunchSlime()
     {
+        rb2D.velocity = new Vector2(0,0);
+        rb2D.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
         power = clickPoint.x - clickRelease.x;
-        Debug.Log(power);
+        //Debug.Log(power);
 
         rb2D.AddForce(transform.up * power * 100);
         rb2D.AddForce(transform.right * power * 100);
     }
+
+    private void checkPlayerPos()
+    {
+        //Check top
+        if (this.transform.position.x >= blockManager.topSpawnOffset)
+        {
+            blockManager.SpawnMoreBlocks(true);
+        }
+
+        if (transform.position.x >= blockManager.bottomSpawnOffset)
+        {
+            blockManager.SpawnMoreBlocks(false);
+        }
+        //Check bottom
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Block")
+        {
+            Debug.Log("Hit block");
+            //gameManager.EndGame();
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Debug.Log("HIT2D");
+        }
+
+    }
+
+
 }
 
 
