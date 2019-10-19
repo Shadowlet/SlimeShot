@@ -27,5 +27,6 @@ public class GameScore : MonoBehaviour
     {
         currentScore++;
         score.text = "Score: " + currentScore;
+        Debug.Log("SCORE: " + currentScore);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SpawnSlingShot : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class SpawnSlingShot : MonoBehaviour
 
     public BlockManager blockManager;
     public GameScore gameScore;
+    public GameObject death;
 
     private Camera mainT;
 
@@ -27,12 +29,15 @@ public class SpawnSlingShot : MonoBehaviour
 
     void Start()
     {
+        death.SetActive(false);
         slingshotPrefab.SetActive(false);
 
         rb2D = gameObject.GetComponent<Rigidbody2D>();
         rb2D.freezeRotation = true;
         mainT = Camera.main;
         //Debug.Log(mainT);
+
+        InvokeRepeating("blockManager.SpawnMoreGround()", 5, 5);
         
 
     }
@@ -40,7 +45,7 @@ public class SpawnSlingShot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        checkPlayerPos();
+        //checkPlayerPos();
 
         
     }
@@ -94,11 +99,6 @@ public class SpawnSlingShot : MonoBehaviour
     }
     private void checkPlayerPos()
     {
-        //Check for score
-        if (this.transform.position.x >= blockManager.blockStartPos + gameScore.currentScore * 10)
-        {
-            gameScore.IncrementScore();
-        }
 
         //Check for ground
         if (this.transform.position.x >= blockManager.groundStartPosX + (blockManager.topGroundOffset * 10))
@@ -116,13 +116,24 @@ public class SpawnSlingShot : MonoBehaviour
         {
             Debug.Log("Hit block");
             //gameManager.EndGame();
+            
+
+            death.SetActive(true);
+            gameManager.RestartGame();
             Destroy(this.gameObject);
         }
-        else
-        {
-            Debug.Log("HIT2D");
-        }
+        
+        
 
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Coin")
+        {
+            Destroy(collision.gameObject);
+            gameScore.IncrementScore();
+        }
     }
 
 
