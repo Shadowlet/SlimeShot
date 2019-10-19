@@ -28,33 +28,33 @@ public class BlockManager : MonoBehaviour
         groundStartPosX = 0;
 
         // Spawn bottom blocks
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 100; i++)
         {
            // Debug.Log(i);
             randID = Random.Range(0, 3);
             Instantiate(blockList[randID], new Vector3(blockStartPos + i * 20, 0, 0), transform.rotation);
             
 
-            if (i == 20)
+            if (i == 100)
             {
                 bottomBlockSpawnOffset = i;
             }
         }
 
         // Spawn top blocks
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 100; i++)
         {
             // Debug.Log(i);
             randID = Random.Range(0, 3);
             Instantiate(blockList[randID], new Vector3(blockStartPos + i * 30, 8, 0), transform.rotation);
 
-            if (i == 20)
+            if (i == 100)
             {
                 topBlockSpawnOffset = i;
             }
         }
 
-        //SpawnMoreGround();
+        SpawnMoreGround();
     }
 
     public void SpawnMoreBlocks(bool isTop)
@@ -62,7 +62,7 @@ public class BlockManager : MonoBehaviour
         if (isTop)
         {
             // Spawn bottom blocks
-            for (int i = bottomBlockSpawnOffset; i < bottomBlockSpawnOffset + 20; i++)
+            for (int i = bottomBlockSpawnOffset; i < bottomBlockSpawnOffset + 100; i++)
             {
                 randID = Random.Range(0, 3);
                 Instantiate(blockList[randID], new Vector3(blockStartPos + i * 20, 0, 0), transform.rotation);
@@ -76,12 +76,12 @@ public class BlockManager : MonoBehaviour
         else
         {
             // Spawn top blocks
-            for (int i = topBlockSpawnOffset; i < topBlockSpawnOffset + 20; i++)
+            for (int i = topBlockSpawnOffset; i < topBlockSpawnOffset + 100; i++)
             {
                 randID = Random.Range(0, 3);
                 Instantiate(blockList[randID], new Vector3(blockStartPos + i * 40, 8, 0), transform.rotation);
 
-                if (i == topBlockSpawnOffset + 20)
+                if (i == topBlockSpawnOffset + 100)
                 {
                     topBlockSpawnOffset = i;
                 }
@@ -92,11 +92,11 @@ public class BlockManager : MonoBehaviour
     public void SpawnMoreGround()
     {
         //Spawn top blocks
-        for (int i = topGroundOffset; i < topGroundOffset + 6; i++)
+        for (int i = topGroundOffset; i < topGroundOffset + 100; i++)
         {
             Instantiate(groundBlocks[0], new Vector3(groundStartPosX + i * 64, 10, 0), Quaternion.identity);
 
-            if (i == topGroundOffset + 6)
+            if (i == topGroundOffset + 100)
             {
                 topGroundOffset = i;
             }
@@ -104,12 +104,12 @@ public class BlockManager : MonoBehaviour
         }
 
         //Spawn bottom blocks
-        for (int i = bottomGroundOffset; i < bottomGroundOffset + 6; i++)
+        for (int i = bottomGroundOffset; i < bottomGroundOffset + 100; i++)
         {
             //64 offset
             Instantiate(groundBlocks[1], new Vector3(groundStartPosX + i * 64, -3, 0), Quaternion.identity);
 
-            if (i == bottomGroundOffset + 6)
+            if (i == bottomGroundOffset + 100)
             {
                 bottomGroundOffset = i;
             }

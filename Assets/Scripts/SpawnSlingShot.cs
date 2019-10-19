@@ -37,7 +37,7 @@ public class SpawnSlingShot : MonoBehaviour
         mainT = Camera.main;
         //Debug.Log(mainT);
 
-        InvokeRepeating("blockManager.SpawnMoreGround()", 5, 5);
+        
         
 
     }

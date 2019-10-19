@@ -12,7 +12,7 @@ public class CoinManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 100; i++)
         {
             float randRangeX = Random.Range(2, 9);
             float randRangY = Random.Range(1, 6);
